@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    <div class="row">
+
+        <div class="col-md-12 text-center">
+            <h1>Register</h1>
+        </div>
+
+        <div class="col-md-12 text-center">
+
+            {{ form_start(registrationForm) }}
+
+                {{ form_row(registrationForm.email, {label_attr: {class: 'col-md-1'} }) }}
+                {{ form_row(registrationForm.password, {label_attr: {class: 'col-md-1'} }) }}
+                {{ form_row(registrationForm.phone, {label_attr: {class: 'col-md-1'} }) }}
+
+                <button class="btn btn-primary">Register</button>
+
+            {{ form_end(registrationForm) }}
+
+        </div>
+
+    </div>
+{% endblock %}
