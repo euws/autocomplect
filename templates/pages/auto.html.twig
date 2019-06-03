@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Auto{% endblock %}
+
+{% block body %}
+
+    <section id="tabs" class="project-tab">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <nav>
+                        <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                            {% for key, details in data %}
+                                <a class="nav-item nav-link {% if loop.first %} active {% endif %}"
+                                   id="{{ details.id }}-tab"
+                                   data-toggle="tab"
+                                   href="#nav-{{ details.id }}"
+                                   role="tab"
+                                   aria-controls="nav-{{ details.id }}"
+                                   aria-selected="{% if loop.first %}true{% else %}false{%  endif %}">{{ key }}</a>
+                            {% endfor %}
+                        </div>
+                    </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                        {% for key, details in data %}
+                            <div class="tab-pane fade {% if loop.first %} show active {%  endif %}"
+                                 id="nav-{{details.id }}"
+                                 role="tabpanel"
+                                 aria-labelledby="{{ details.id }}-tab">
+                                <table class="table" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Деталь</th>
+                                            <th scope="col">Снято</th>
+                                            <th scope="col">Заказано</th>
+                                            <th scope="col">Коментарий</th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for detail in details.details %}
+                                            <tr>
+                                                <th>{{ detail.part }}</th>
+                                                <th>{{ detail.removed }}</th>
+                                                <th>{{ detail.ordered }}</th>
+                                                <td>
+                                                    {{ detail.usercomments }}
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-success popup-with-move-anim button" href="#small-dialog">Редактировать</button>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

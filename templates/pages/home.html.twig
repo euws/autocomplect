@@ -1,13 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Auto{% endblock %}
 
 {% block body %}
-    <div class="row">
 
-        <div class="col-md-12 text-center">
-            <h1>Hello</h1>
-        </div>
+   {% if message is defined %}
+       <h1 class="text-center">{{ message }}</h1>
+   {% else  %}
+       <div class="row">
 
-    </div>
+           {% for auto in autos %}
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-body">
+                            <ul>
+                                <li>Аукцион: {{ auto.auction }}</li>
+                                <li>Категория: {{ auto.cat }}</li>
+                                <li>Разборка: {{ auto.razb }}</li>
+                                <li>Менеджер: {{ auto.manag }}</li>
+                                <li>Статус: {{ auto.status }}</li>
+                            </ul>
+                            <div class="d-flex justify-content-between align-items-center">
+                                 <a href="{{ path('app_auto', {'idauto': auto.idauto}) }}" class="btn btn-secondary">Подробнее</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+           {% endfor %}
+
+       </div>
+   {% endif %}
+
 {% endblock %}

@@ -3,22 +3,26 @@
 {% block title %}Login{% endblock %}
 
 {% block body %}
-    <div class="row">
 
-        <div class="col-md-12 text-center">
-            <h1>Login</h1>
-        </div>
+    {{ form_start(loginForm, {'attr': {'class': 'form-signin'}}) }}
 
-        <div class="col-md-12 text-center">
+            <h1 class="h3 mb-3 font-weight-normal text-center">Авторизация</h1>
 
-            {{ form_start(loginForm) }}
+            <div class="my-custom-class-for-errors">
+                {{ form_errors(loginForm) }}
+            </div>
 
-                {{ form_row(loginForm.email, {label_attr: {class: 'col-md-1'} }) }}
-                {{ form_row(loginForm.password, {label_attr: {class: 'col-md-1'} }) }}
+            {{ form_row(loginForm.email, {'label_attr': {'class': 'sr-only'},
+                                           'attr': {'class': 'form-control', 'placeholder': 'Email'}}
+            ) }}
 
-                <button class="btn btn-primary">Login</button>
+            {{ form_row(loginForm.password, {'label_attr': {'class': 'sr-only'},
+                                             'attr': {'class': 'form-control', 'placeholder': 'Пароль'}}
+            ) }}
 
-            {{ form_end(loginForm) }}
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
 
-        </div>
+    {{ form_end(loginForm) }}
+
+
 {% endblock %}
