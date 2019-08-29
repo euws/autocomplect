@@ -1,0 +1,91 @@
+<?php
+use Zend\Session\Container;
+
+$session = new Container('ClientSession');
+$session->userId;
+?>
+<?= $this->doctype() ?>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <?= $this->headTitle('ZF Skeleton Application')->setSeparator(' - ')->setAutoEscape(false) ?>
+
+        <?= $this->headMeta()
+            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+
+        <!-- Le styles -->
+        <?= $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
+            ->prependStylesheet($this->basePath('css/style.css'))
+            ->prependStylesheet($this->basePath('css/fancybox.min.css'))
+            ->prependStylesheet($this->basePath('css/slick.css'))
+            ->prependStylesheet($this->basePath('css/slick-theme.css'))
+            ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
+            ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
+        ?>
+
+        <!-- Scripts -->
+        <?= $this->headScript()
+            ->prependFile($this->basePath('js/scripts.js'))
+            ->prependFile($this->basePath('js/number-polyfill.min.js'))
+            ->prependFile($this->basePath('js/fancybox.min.js'))
+            ->prependFile($this->basePath('js/slick.min.js'))
+            ->prependFile($this->basePath('js/bootstrap.min.js'))
+            ->prependFile($this->basePath('js/jquery-3.1.0.min.js'))
+        ?>
+    </head>
+    <body>
+    <?php if(isset($session->userId)): ?>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo-box">
+                    <?php if($this->url('home') != $this->url()): ?>
+                        <a class="back-click float-left" href="#" onclick="window.history.back()">
+                            <img alt="Previous Chapter"
+                                 src="<?= $this->basePath('img/left.png') ?>"
+                                 width="30px" height="30px">
+                        </a>
+                    <?php endif; ?>
+                    <a href="<?= $this->url('home') ?>" class="float-left"><img src="<?= $this->basePath('img/logo.png') ?>" alt=""></a>
+                </div>
+                <div class="user-info-box">
+                    <a href="<?= $this->url('logout') ?>" class="btn btn-secondary float-right">Выход</a>
+                    <p class="float-right"><?= $session->userName ?></p>
+                    <img class="float-right"
+                         alt="user-img"
+                         src="<?= $this->basePath('img/anonym_m.png') ?>"
+                         width="30px" height="30px">
+                </div>
+                <div class="small-nav col-12">
+                    <?php if($this->url('home') != $this->url()): ?>
+                        <a class="back-click" href="#" onclick="window.history.back()">
+                            <img alt="Previous Chapter"
+                                 src="<?= $this->basePath('img/left.png') ?>"
+                                 width="30px" height="30px">
+                        </a>
+                    <?php else: ?>
+                        <div class="float-left" style="width: 40px; height: 30px;"></div>
+                    <?php endif; ?>
+                    <a href="<?= $this->url('home') ?>" class="logo"><img src="<?= $this->basePath('img/logo.png') ?>" alt="" width="150"></a>
+                    <input class="menu-btn" type="checkbox" id="menu-btn" />
+                    <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
+                    <ul class="menu">
+                        <img class="menu-item"
+                             alt="user-img"
+                             src="<?= $this->basePath('img/anonym_m.png') ?>"
+                             width="30px" height="30px">
+                        <p class="menu-item"><?= $session->userName ?></p>
+                        <a href="<?= $this->url('logout') ?>" class="btn btn-secondary menu-item">Выход</a>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    <?php endif; ?>
+        <div class="container content">
+            <?= $this->content ?>
+        </div>
+        <?= $this->inlineScript() ?>
+    </body>
+</html>

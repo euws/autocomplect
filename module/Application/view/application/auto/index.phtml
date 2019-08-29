@@ -1,0 +1,71 @@
+<?php
+$title = 'Авто';
+$this->headTitle($title);
+
+?>
+<div class="row">
+    <?php
+        If (isset($message)):
+            ?><p> <?= $message ?></p>
+    <?php
+        else:
+    ?>
+            <div class="col-lg-12 auto-title">
+                <h1><?= $auto['nameauto'] ?></h1>
+            </div>
+
+            <div class="col-lg-6 col-md-12 auto-avatar">
+                <img class="card-img-top" alt="auto-avatar" style="width: 100%; display: block;" src="<?= $this->basePath($auto['picture']) ?>" data-holder-rendered="true">
+            </div>
+
+            <div class="col-lg-3 col-md-6 auto-description">
+                <ul class="list-group">
+                    <li class="list-group-item">Артикул: <?= $auto['artauto'] ?></li>
+                    <li class="list-group-item">Аукцион: <?= $auto['auction'] ?></li>
+                    <li class="list-group-item">Категория: <?= $auto['cat'] ?></li>
+                    <li class="list-group-item">Менеджер: <?= $auto['manag'] ?></li>
+                    <li class="list-group-item">Разборка: <?= $auto['razb'] ?></li>
+                    <li class="list-group-item">Статус: <?= $auto['statusА'] ?></li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-6 auto-description">
+                <ul class="list-group">
+                    <li class="list-group-item">Год: <?= $auto['Year'] ?></li>
+                    <li class="list-group-item">Тип топлива: <?= $auto['Fuel'] ?></li>
+                    <li class="list-group-item">Объем: <?= $auto['Engine'] ?></li>
+                    <li class="list-group-item">Трансмиссия: <?= $auto['Transmission'] ?></li>
+                    <li class="list-group-item">Цвет: <?= $auto['Color'] ?></li>
+                    <a class="btn btn-success float-right" href="<?= $this->url('details', ['autoId' => $auto['idauto']]) ?>">Детали</a>
+                </ul>
+            </div>
+
+            <div class="col-md-6 auto-gallery-title">
+                <h2>Фото</h2>
+            </div>
+
+            <div class="col-md-12 auto-gallery-title img-container">
+
+                <?php foreach ($auto['pictureall'] as $picture){
+
+                    $pos = strrpos($picture, '.');
+
+                    if($pos !== false)
+                    {
+                        $thumbnail = substr_replace($picture, '_200x150.', $pos, strlen('.'));
+                    }else{
+                        $thumbnail = $picture;
+                    }
+                    ?>
+                    <a href="<?= $this->basePath($picture) ?>" data-fancybox="images" data-caption="<?= $auto['nameauto'] ?>" data-width="2048" data-height="1365">
+                        <img src="<?= $this->basePath($thumbnail) ?>" alt="<?= $auto['nameauto'] ?>" />
+                    </a>
+                <?php
+                    }
+                ?>
+            </div>
+
+
+    <?php
+        endif
+    ?>
+</div>

@@ -1,0 +1,40 @@
+<?php
+$title = 'Авторизация';
+$this->headTitle($title);
+?>
+<?php
+$form->setAttribute('class', 'form-signin');
+// This provides a default CSS class and placeholder text for the title element:
+$email = $form->get('email');
+$email->setAttribute('class', 'form-control');
+$email->setAttribute('placeholder', 'Email');
+
+// This provides a default CSS class and placeholder text for the artist element:
+$password = $form->get('password');
+$password->setAttribute('class', 'form-control');
+$password->setAttribute('placeholder', 'Пароль');
+
+// This provides CSS classes for the submit button:
+$submit = $form->get('submit');
+$submit->setAttribute('class', 'btn btn-lg btn-primary btn-block');
+
+$form->setAttribute('action', $this->url('login', ['action' => 'post']));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+?>
+<?php // Wrap the elements in divs marked as form groups, and render the
+// label, element, and errors separately within ?>
+    <h1 class="h3 mb-3 font-weight-normal text-center"><?= $this->escapeHtml($title) ?></h1>
+
+    <div class="form-group">
+        <?= $this->formElement($email) ?>
+        <?= $this->formElementErrors()->render($email, ['class' => 'help-block']) ?>
+    </div>
+
+    <div class="form-group">
+        <?= $this->formElement($password) ?>
+    </div>
+<?= $this->formSubmit($submit); ?>
+<a href="<?= $this->url('registration') ?>">Зарегистрироваться</a>
+<?= $this->form()->closeTag(); ?>

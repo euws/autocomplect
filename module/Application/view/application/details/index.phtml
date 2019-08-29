@@ -1,0 +1,132 @@
+<?php
+$title = 'Детали';
+$this->headTitle($title);
+?>
+
+<section id="tabs" class="project-tab">
+        <div class="container">
+            <?php if (count($auto)): ?>
+                <div class="row">
+                    <div class="col-md-12 auto-title">
+                        <h1><?= $auto['nameauto'] ?></h1>
+                    </div>
+                    <div id="auto-fotos-details-page" class="col-md-12 auto-gallery-title img-container">
+
+                        <?php foreach ($auto['pictureall'] as $picture){
+
+                            $pos = strrpos($picture, '.');
+
+                            if($pos !== false)
+                            {
+                                $thumbnail = substr_replace($picture, '_200x150.', $pos, strlen('.'));
+                            }else{
+                                $thumbnail = $picture;
+                            }
+                            ?>
+                            <a href="<?= $this->basePath($picture) ?>" data-fancybox="images" data-caption="<?= $auto['nameauto'] ?>" data-width="2048" data-height="1365">
+                                <img data-lazy="<?= $this->basePath($thumbnail) ?>" alt="<?= $auto['nameauto'] ?>" />
+                            </a>
+                            <?php
+                        }
+                        ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <div class="row">
+                <?php if(count($data)): ?>
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-success float-right save-details-btn">Сохранить</button>
+                        <div class="form-check float-right confirm-order-checkbox">
+                            <input form="details_form" type="checkbox" class="form-check-input" name="confirm-order" id="confirm-order">
+                            <label class="form-check-label" for="confirm-order">Подтвердить заказ</label>
+                        </div>
+                        <div class="alert alert-success d-none float-right">
+                            <strong>Сохранено!</strong> Изменения успешно сохранены.
+                        </div>
+                        <div class="alert alert-danger d-none float-right">
+                            <strong>Ошибка!</strong> Изменения не были применены.
+                        </div>
+                        <textarea form="details_form" name="comment" class="details-comment" rows="3" placeholder="Комментарий"></textarea>
+                    </div>
+                    <div class="col-md-12">
+                        <form id="details_form" action="">
+                            <nav>
+                                <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                    <?php
+                                        $i = 0;
+                                        foreach($data as $key => $details){ ?>
+                                            <a class="nav-item nav-link <?php if($i ==0): echo 'active'; endif; ?>"
+                                               id="<?= $details['id'] ?>-tab"
+                                               data-toggle="tab"
+                                               href="#nav-<?= $details['id'] ?>"
+                                               role="tab"
+                                               aria-controls="nav-<?= $details['id'] ?>"
+                                               aria-selected="<?php if($i == 0): echo 'true'; else: echo 'false'; endif; ?>"><?= $key ?></a>
+                                        <?php
+                                            $i++;
+                                            } ?>
+                                </div>
+                            </nav>
+                            <div class="tab-content" id="nav-tabContent">
+                                <?php
+                                    $h = 0;
+                                    foreach ($data as $key => $details){ ?>
+                                        <div class="tab-panel fade <?php if($h == 0): echo 'show active'; endif; ?>"
+                                             id="nav-<?= $details['id'] ?>"
+                                             role="tabpanel"
+                                             aria-labelledby="<?= $details['id'] ?>-tab">
+                                            <table class="details-table table" cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="detail-column" style="width: 15%" scope="col">Деталь</th>
+                                                        <th style="width: 10%" scope="col">Заказано</th>
+                                                        <th class="detail-column" style="width: 15%" scope="col">Деталь</th>
+                                                        <th style="width: 10%" scope="col">Заказано</th>
+                                                        <th class="detail-column" style="width: 15%" scope="col">Деталь</th>
+                                                        <th style="width: 10%" scope="col">Заказано</th>
+                                                        <th class="detail-column" style="width: 15%" scope="col">Деталь</th>
+                                                        <th style="width: 10%" scope="col">Заказано</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                <?php
+                                                    $i = 0;
+                                                    foreach($details['details'] as $detail){
+                                                        if($i % 4 == 0):?><tr><?php endif ?>
+                                                            <input type="hidden" name="partcode[]" form="details_form" value="<?= $detail['partcode'] ?>"/>
+                                                            <th class="detail-column">
+                                                                <?= $detail['part'] ?>
+                                                            </th>
+                                                            <th>
+                                                            <input type="number" min="0" max="9" name="ordered[]" form="details_form" value="<?= $detail['ordered'] ?>" />
+                                                <?php if($i+1 % 4 == 0):?></tr><?php endif;
+                                                    $i++;
+                                                    } ?>
+                                                </tbody>
+                                            </table>
+                                            <div class="col-md-12">
+                                                <div class="alert alert-success d-none float-left">
+                                                    <strong>Сохранено!</strong> Изменения успешно сохранены.
+                                                </div>
+                                                <div class="alert alert-danger d-none float-left">
+                                                    <strong>Ошибка!</strong> Изменения не были применены.
+                                                </div>
+                                                <button type="submit" class="btn btn-success float-right save-details-btn">Сохранить</button>
+                                                <div class="form-check float-right confirm-order-checkbox">
+                                                    <input type="checkbox" class="form-check-input" name="confirm-order" id="confirm-order-bottom">
+                                                    <label class="form-check-label" for="confirm-order-bottom">Подтвердить заказ</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                <?php
+                                    $h++;
+                                    } ?>
+                            </div>
+                        </form>
+                    </div>
+                <?php else: ?>
+                    <h1>Детали отсуствуют</h1>
+                <?php endif; ?>
+            </div>
+        </div>
+    </section>

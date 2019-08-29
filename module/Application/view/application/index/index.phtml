@@ -1,0 +1,37 @@
+<?php
+$title = 'Кабинет';
+$this->headTitle($title);
+
+?>
+<div class="row">
+    <?php
+        If (isset($message)){
+            ?><p> <?= $message ?></p><?php
+        }else{
+            foreach ($autos as $auto){?>
+                <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <a href="<?= $this->url('auto', ['autoId' => $auto['idauto']]) ?>" class="card mb-4 shadow-sm">
+                            <?php
+                                $pos = strrpos($auto['picture'], '.');
+
+                                if($pos !== false)
+                                {
+                                    $auto['picture'] = substr_replace($auto['picture'], '_200x150.', $pos, strlen('.'));
+                                }
+                            ?>
+                            <img class="card-img-top" alt="auto-avatar" style="width: 100%; display: block;" src="<?= $this->basePath($auto['picture']) ?>" data-holder-rendered="true">
+                            <div class="card-body">
+                                <ul>
+                                    <li><?= $auto['artauto'] ?></li>
+                                    <li><?= $auto['nameauto'] ?></li>
+                                    <li><?= $auto['Year'] ?></li>
+                                    <li><?= $auto['status'] ?></li>
+                                    <li><?= $auto['idorder'] ?></li>
+                                </ul>
+                            </div>
+                        </a>
+                    </div>
+            <?php }
+        }
+    ?>
+</div>

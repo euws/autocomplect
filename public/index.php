@@ -1,27 +1,40 @@
 <?php
+error_reporting( E_ALL );
+use Zend\Mvc\Application;
+use Zend\Stdlib\ArrayUtils;
 
-use App\Kernel;
-use Symfony\Component\Debug\Debug;
-use Symfony\Component\HttpFoundation\Request;
+/**
+ * This makes our life easier when dealing with paths. Everything is relative
+ * to the application root now.
+ */
+chdir(dirname(__DIR__));
 
-require dirname(__DIR__).'/config/bootstrap.php';
-
-if ($_SERVER['APP_DEBUG']) {
-    umask(0000);
-
-    Debug::enable();
+// Decline static file requests back to the PHP built-in webserver
+if (php_sapi_name() === 'cli-server') {
+    $path = realpath(__DIR__ . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+    if (__FILE__ !== $path && is_file($path)) {
+        return false;
+    }
+    unset($path);
 }
 
-if ($trustedProxies = $_SERVER['TRUSTED_PROXIES'] ?? $_ENV['TRUSTED_PROXIES'] ?? false) {
-    Request::setTrustedProxies(explode(',', $trustedProxies), Request::HEADER_X_FORWARDED_ALL ^ Request::HEADER_X_FORWARDED_HOST);
+// Composer autoloading
+include __DIR__ . '/../vendor/autoload.php';
+
+if (! class_exists(Application::class)) {
+    throw new RuntimeException(
+        "Unable to load application.\n"
+        . "- Type `composer install` if you are developing locally.\n"
+        . "- Type `vagrant ssh -c 'composer install'` if you are using Vagrant.\n"
+        . "- Type `docker-compose run zf composer install` if you are using Docker.\n"
+    );
 }
 
-if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? $_ENV['TRUSTED_HOSTS'] ?? false) {
-    Request::setTrustedHosts([$trustedHosts]);
+// Retrieve configuration
+$appConfig = require __DIR__ . '/../config/application.config.php';
+if (file_exists(__DIR__ . '/../config/development.config.php')) {
+    $appConfig = ArrayUtils::merge($appConfig, require __DIR__ . '/../config/development.config.php');
 }
 
-$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
-$request = Request::createFromGlobals();
-$response = $kernel->handle($request);
-$response->send();
-$kernel->terminate($request, $response);
+// Run the application!
+Application::init($appConfig)->run();
